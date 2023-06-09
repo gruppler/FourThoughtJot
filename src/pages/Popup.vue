@@ -1,5 +1,5 @@
 <template>
-  <q-card>
+  <q-card square>
     <!-- Type -->
     <q-btn-toggle
       class="no-border-radius"
