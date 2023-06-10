@@ -145,8 +145,8 @@ module.exports = configure(function (ctx) {
         description: `A logging tool for the FourThought protocol`,
         display: "standalone",
         orientation: "portrait",
-        background_color: "#ffffff",
-        theme_color: "#027be3",
+        background_color: "#1d1d1d",
+        theme_color: "#888",
         icons: [
           {
             src: "icons/icon-128x128.png",
