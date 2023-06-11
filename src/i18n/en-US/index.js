@@ -3,11 +3,19 @@
 
 export default {
   appTitle: "FourThought Jot",
+  Accuracy: "Accuracy",
+  Accurate: "Accurate",
+  Benevolence: "Benevolence",
+  Benevolent: "Benevolent",
+  Certain: "Certain",
+  Certainty: "Certainty",
+  Inaccurate: "Inaccurate",
+  Malevolent: "Malevolent",
+  Neutral: "Neutral",
   Prediction: "Prediction",
   Question: "Question",
   Reflection: "Reflection",
   Statement: "Statement",
   Thought: "Thought",
-  Uncertainty: "Uncertainty",
-  Valence: "Valence",
+  Uncertain: "Uncertain",
 };
