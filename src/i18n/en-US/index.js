@@ -3,19 +3,32 @@
 
 export default {
   appTitle: "FourThought Jot",
-  Accuracy: "Accuracy",
-  Accurate: "Accurate",
-  Benevolence: "Benevolence",
-  Benevolent: "Benevolent",
-  Certain: "Certain",
-  Certainty: "Certainty",
-  Inaccurate: "Inaccurate",
-  Malevolent: "Malevolent",
-  Neutral: "Neutral",
+  Goodness: "Goodness",
   Prediction: "Prediction",
   Question: "Question",
   Reflection: "Reflection",
   Statement: "Statement",
   Thought: "Thought",
-  Uncertain: "Uncertain",
+  Truth: "Truth",
+
+  labels: {
+    goodness: [
+      "Very Bad",
+      "Bad",
+      "Somewhat Bad",
+      "Neutral",
+      "Somewhat Good",
+      "Good",
+      "Very Good",
+    ],
+    truth: [
+      "Certainly False",
+      "Probably False",
+      "Possibly False",
+      "Uncertain",
+      "Possibly True",
+      "Probably True",
+      "Certainly True",
+    ],
+  },
 };

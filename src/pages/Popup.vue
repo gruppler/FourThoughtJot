@@ -23,66 +23,44 @@
       autogrow
     />
 
-    <!-- Accuracy -->
+    <!-- Truth -->
     <q-item>
       <q-item-section>
-        <q-item-label>{{ $t("Accuracy") }}</q-item-label>
+        <q-item-label>{{ $t("Truth") }}</q-item-label>
         <q-slider
           class="q-mb-lg"
-          v-model="buffer.accuracy"
-          @click.right.prevent="buffer.accuracy = 50"
+          v-model="buffer.truth"
+          @click.right.prevent="buffer.truth = 50"
           :min="0"
           :max="100"
-          :markers="50"
+          :markers="100 / truthLabels.length"
           snap
           label
           label-always
           switch-label-side
-          :label-value="accuracyLabel"
+          :label-value="truthLabel"
           :color="typeBG || 'primary'"
           :label-text-color="typeFG || ''"
         />
       </q-item-section>
     </q-item>
 
-    <!-- Benevolence -->
+    <!-- Goodness -->
     <q-item>
       <q-item-section>
-        <q-item-label>{{ $t("Benevolence") }}</q-item-label>
+        <q-item-label>{{ $t("Goodness") }}</q-item-label>
         <q-slider
           class="q-mb-lg"
-          v-model="buffer.benevolence"
-          @click.right.prevent="buffer.benevolence = 50"
+          v-model="buffer.goodness"
+          @click.right.prevent="buffer.goodness = 50"
           :min="0"
           :max="100"
-          :markers="50"
+          :markers="100 / goodnessLabels.length"
           snap
           label
           label-always
           switch-label-side
-          :label-value="benevolenceLabel"
-          :color="typeBG || 'primary'"
-          :label-text-color="typeFG || ''"
-        />
-      </q-item-section>
-    </q-item>
-
-    <!-- Certainty -->
-    <q-item>
-      <q-item-section>
-        <q-item-label>{{ $t("Certainty") }}</q-item-label>
-        <q-slider
-          class="q-mb-lg"
-          v-model="buffer.certainty"
-          @click.right.prevent="buffer.certainty = 50"
-          :min="0"
-          :max="100"
-          :markers="50"
-          snap
-          label
-          label-always
-          switch-label-side
-          :label-value="certaintyLabel"
+          :label-value="goodnessLabel"
           :color="typeBG || 'primary'"
           :label-text-color="typeFG || ''"
         />
@@ -98,14 +76,13 @@ import { useI18n } from "vue-i18n";
 export default {
   name: "PagePopup",
   setup() {
-    const { t } = useI18n({ useScope: "global" });
+    const { t, locale, messages } = useI18n({ useScope: "global" });
 
     const buffer = ref({
       type: null,
       thought: "",
-      accuracy: 50,
-      benevolence: 50,
-      certainty: 50,
+      truth: 50,
+      goodness: 50,
     });
 
     const thoughtInput = ref(null);
@@ -147,41 +124,36 @@ export default {
       return buffer.value.type ? types[buffer.value.type].fg : "";
     });
 
-    const accuracyLabel = computed(() => {
-      const value = buffer.value.accuracy;
+    const truthLabels = computed(
+      () => messages.value[locale.value].labels.truth
+    );
+    const truthLabel = computed(() => {
+      const value = buffer.value.truth;
+      const max = truthLabels.value.length;
+      const step = 100 / max;
       let label;
-      if (value < 50) {
-        label = t("Inaccurate");
-      } else if (value > 50) {
-        label = t("Accurate");
-      } else {
-        label = t("Neutral");
+      for (let i = 0; i < max; i++) {
+        if (value <= step * (i + 1)) {
+          label = truthLabels.value[i];
+          break;
+        }
       }
       return `${label} (${value}%)`;
     });
 
-    const benevolenceLabel = computed(() => {
-      const value = buffer.value.benevolence;
+    const goodnessLabels = computed(
+      () => messages.value[locale.value].labels.goodness
+    );
+    const goodnessLabel = computed(() => {
+      const value = buffer.value.goodness;
+      const max = goodnessLabels.value.length;
+      const step = 100 / max;
       let label;
-      if (value < 50) {
-        label = t("Malevolent");
-      } else if (value > 50) {
-        label = t("Benevolent");
-      } else {
-        label = t("Neutral");
-      }
-      return `${label} (${value}%)`;
-    });
-
-    const certaintyLabel = computed(() => {
-      const value = buffer.value.certainty;
-      let label;
-      if (value < 50) {
-        label = t("Uncertain");
-      } else if (value > 50) {
-        label = t("Certain");
-      } else {
-        label = t("Neutral");
+      for (let i = 0; i < max; i++) {
+        if (value <= step * (i + 1)) {
+          label = goodnessLabels.value[i];
+          break;
+        }
       }
       return `${label} (${value}%)`;
     });
@@ -192,9 +164,10 @@ export default {
       types,
       typeBG,
       typeFG,
-      accuracyLabel,
-      benevolenceLabel,
-      certaintyLabel,
+      truthLabel,
+      truthLabels,
+      goodnessLabel,
+      goodnessLabels,
     };
   },
 };
