@@ -10,7 +10,8 @@
     "icons": "icongenie g -i app-icon.png --quality 12 --theme-color 121212 --skip-trim",
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "quasar dev -m bex"
+    "dev": "quasar dev -m bex",
+    "build": "quasar build -m bex"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
