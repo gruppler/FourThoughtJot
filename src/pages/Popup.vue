@@ -38,6 +38,7 @@
           label
           label-always
           switch-label-side
+          :disable="buffer.type === 'question'"
           :label-value="truthLabel"
           :color="typeBG || 'primary'"
           :label-text-color="typeFG || ''"
