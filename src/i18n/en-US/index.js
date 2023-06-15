@@ -3,10 +3,15 @@
 
 export default {
   appTitle: "FourThought Jot",
+  Global: "Global",
   Goodness: "Goodness",
+  Local: "Local",
   Prediction: "Prediction",
+  Private: "Private",
   Question: "Question",
   Reflection: "Reflection",
+  Reset: "Reset",
+  Stake: "Stake",
   Statement: "Statement",
   Thought: "Thought",
   Truth: "Truth",

@@ -4,7 +4,7 @@
     <q-btn-toggle
       class="no-border-radius"
       v-model="buffer.type"
-      :options="Object.values(types)"
+      :options="typeOptions"
       :toggle-color="typeBG"
       :toggle-text-color="typeFG"
       @click="thoughtInput.focus()"
@@ -67,6 +67,56 @@
         />
       </q-item-section>
     </q-item>
+
+    <q-separator />
+
+    <q-card-actions>
+      <!-- Privacy -->
+      <q-select
+        v-model="privacy"
+        :options="privacyOptions"
+        :color="typeBG || 'primary'"
+        map-options
+        emit-value
+        filled
+        dense
+      >
+        <template v-slot:prepend>
+          <q-icon
+            :name="privacyLevels[privacy].icon"
+            :color="typeBG || 'primary'"
+          />
+        </template>
+
+        <template v-slot:option="scope">
+          <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+            <q-item-section v-if="scope.opt.icon" avatar>
+              <q-icon :name="scope.opt.icon" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ scope.opt.label }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+
+      <q-space />
+
+      <q-btn
+        @click="reset"
+        :label="$t('Reset')"
+        :color="typeBG || 'primary'"
+        flat
+      />
+      <q-btn
+        @click="stake"
+        :label="$t('Stake')"
+        :color="typeBG || 'primary'"
+        :text-color="isValid ? typeFG || 'primary' : ''"
+        :disable="!isValid"
+        :flat="!isValid"
+      />
+    </q-card-actions>
   </q-card>
 </template>
 
@@ -79,12 +129,14 @@ export default {
   setup() {
     const { t, locale, messages } = useI18n({ useScope: "global" });
 
-    const buffer = ref({
+    const defaultBuffer = Object.freeze({
       type: null,
       thought: "",
       truth: 50,
       goodness: 50,
     });
+
+    const buffer = ref({ ...defaultBuffer });
 
     const thoughtInput = ref(null);
 
@@ -118,6 +170,7 @@ export default {
         fg: "grey-1",
       },
     };
+    const typeOptions = Object.values(types);
     const typeBG = computed(() => {
       return buffer.value.type ? types[buffer.value.type].bg : "";
     });
@@ -159,16 +212,58 @@ export default {
       return `${label} (${value}%)`;
     });
 
+    const privacy = ref("private");
+    const privacyLevels = {
+      private: {
+        value: "private",
+        label: t("Private"),
+        icon: "private",
+        order: 1,
+      },
+      local: {
+        value: "local",
+        label: t("Local"),
+        icon: "local",
+        order: 2,
+      },
+      global: {
+        value: "global",
+        label: t("Global"),
+        icon: "global",
+        order: 3,
+      },
+    };
+    const privacyOptions = Object.values(privacyLevels).sort(
+      (a, b) => a.order - b.order
+    );
+
+    const isValid = computed(() => {
+      return Boolean(buffer.value.type && buffer.value.thought.trim());
+    });
+
+    const reset = () => {
+      buffer.value = { ...defaultBuffer };
+    };
+
+    const stake = () => {};
+
     return {
       buffer,
       thoughtInput,
       types,
+      typeOptions,
       typeBG,
       typeFG,
       truthLabel,
       truthLabels,
       goodnessLabel,
       goodnessLabels,
+      privacy,
+      privacyLevels,
+      privacyOptions,
+      isValid,
+      reset,
+      stake,
     };
   },
 };
