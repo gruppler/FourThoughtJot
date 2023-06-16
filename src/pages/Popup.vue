@@ -28,7 +28,7 @@
       <q-item-section>
         <q-item-label>{{ $t("Truth") }}</q-item-label>
         <q-slider
-          class="q-mb-lg"
+          class="q-pb-lg"
           v-model="buffer.truth"
           @click.right.prevent="buffer.truth = 50"
           :min="0"
@@ -38,10 +38,10 @@
           label
           label-always
           switch-label-side
-          :disable="buffer.type === 'question'"
           :label-value="truthLabel"
           :color="typeBG || 'primary'"
           :label-text-color="typeFG || ''"
+          :disable="buffer.type === 'question'"
         />
       </q-item-section>
     </q-item>
@@ -51,7 +51,7 @@
       <q-item-section>
         <q-item-label>{{ $t("Goodness") }}</q-item-label>
         <q-slider
-          class="q-mb-lg"
+          class="q-pb-lg q-mb-sm"
           v-model="buffer.goodness"
           @click.right.prevent="buffer.goodness = 50"
           :min="0"
@@ -113,6 +113,7 @@
         :label="$t('Stake')"
         :color="typeBG || 'primary'"
         :text-color="isValid ? typeFG || 'primary' : ''"
+        :loading="isStaking"
         :disable="!isValid"
         :flat="!isValid"
       />
@@ -237,15 +238,24 @@ export default {
       (a, b) => a.order - b.order
     );
 
-    const isValid = computed(() => {
-      return Boolean(buffer.value.type && buffer.value.thought.trim());
-    });
-
     const reset = () => {
       buffer.value = { ...defaultBuffer };
     };
 
-    const stake = () => {};
+    const stake = async () => {
+      try {
+        isStaking.value = true;
+      } catch (error) {
+        console.error(error);
+      } finally {
+        isStaking.value = false;
+      }
+    };
+    const isStaking = ref(false);
+
+    const isValid = computed(() => {
+      return Boolean(buffer.value.type && buffer.value.thought.trim());
+    });
 
     return {
       buffer,
@@ -261,9 +271,10 @@ export default {
       privacy,
       privacyLevels,
       privacyOptions,
-      isValid,
       reset,
       stake,
+      isStaking,
+      isValid,
     };
   },
 };
