@@ -161,14 +161,14 @@ export default {
         label: t("Reflection"),
         icon: "reflection",
         bg: "reflection",
-        fg: "grey-10",
+        fg: "grey-1",
       },
       statement: {
         value: "statement",
         label: t("Statement"),
         icon: "statement",
         bg: "statement",
-        fg: "grey-1",
+        fg: "grey-10",
       },
     };
     const typeOptions = Object.values(types);
