@@ -122,12 +122,15 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
+import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
+import { isEqual } from "lodash";
 
 export default {
   name: "PagePopup",
   setup() {
+    const store = useStore();
     const { t, locale, messages } = useI18n({ useScope: "global" });
 
     const defaultBuffer = Object.freeze({
@@ -137,7 +140,17 @@ export default {
       goodness: 50,
     });
 
-    const buffer = ref({ ...defaultBuffer });
+    const buffer = ref({ ...(store.state.main.draft || defaultBuffer) });
+    watch(
+      buffer,
+      (draft) => {
+        if (isEqual(draft, defaultBuffer)) {
+          draft = null;
+        }
+        store.dispatch("saveDraft", draft);
+      },
+      { deep: true }
+    );
 
     const thoughtInput = ref(null);
 
@@ -213,7 +226,8 @@ export default {
       return `${label} (${value}%)`;
     });
 
-    const privacy = ref("private");
+    const privacy = ref(store.state.main.privacy);
+    watch(privacy, (mode) => store.dispatch("setPrivacy", mode));
     const privacyLevels = {
       private: {
         value: "private",

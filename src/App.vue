@@ -3,15 +3,17 @@
 </template>
 <script>
 import { defineComponent } from "vue";
+import { useStore } from "vuex";
 import { useQuasar } from "quasar";
 import ICONS from "./icons";
 
 export default defineComponent({
   name: "App",
   setup() {
+    const store = useStore();
     const $q = useQuasar();
 
-    $q.dark.set("auto");
+    $q.dark.set(store.state.main.dark);
 
     // Custom icon mapping
     $q.iconMapFn = (name) => {
