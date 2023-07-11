@@ -2,6 +2,12 @@
 
 A logging tool for the FourThought protocol
 
+## Create `.env` file
+
+```bash
+cp .env-template .env
+```
+
 ## Install the dependencies
 
 ```bash
