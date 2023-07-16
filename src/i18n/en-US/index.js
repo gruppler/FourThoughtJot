@@ -1,5 +1,6 @@
 export default {
   appTitle: "FourThought Jot",
+  Authorize: "Authorize",
   Global: "Global",
   Goodness: "Goodness",
   Local: "Local",
