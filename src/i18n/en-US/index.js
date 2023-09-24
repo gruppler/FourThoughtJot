@@ -1,10 +1,9 @@
 export default {
   appTitle: "FourThought Jot",
-  Authorize: "Authorize",
-  authorizeIris: "Connect FourThought Jot to your Iris server",
+  Connect: "Connect",
+  connectIris: "Connect FourThought Jot to your Iris server",
   "Dark Mode": "Dark Mode",
   Global: "Global",
-  Goodness: "Goodness",
   Local: "Local",
   Prediction: "Prediction",
   Private: "Private",
@@ -14,10 +13,11 @@ export default {
   Stake: "Stake",
   Statement: "Statement",
   Thought: "Thought",
-  Truth: "Truth",
+  Valence: "Valence",
+  Verity: "Verity",
 
   labels: {
-    goodness: [
+    valence: [
       "Very Bad",
       "Bad",
       "Somewhat Bad",
@@ -26,7 +26,7 @@ export default {
       "Good",
       "Very Good",
     ],
-    truth: [
+    verity: [
       "Certainly False",
       "Probably False",
       "Possibly False",

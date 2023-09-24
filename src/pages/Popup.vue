@@ -26,19 +26,20 @@
     <!-- Truth -->
     <q-item>
       <q-item-section>
-        <q-item-label>{{ $t("Truth") }}</q-item-label>
+        <q-item-label>{{ $t("Verity") }}</q-item-label>
         <q-slider
           class="q-pb-lg"
-          v-model="buffer.truth"
-          @click.right.prevent="buffer.truth = 50"
+          v-model="buffer.verity"
+          @click.right.prevent="buffer.verity = 0.5"
           :min="0"
-          :max="100"
-          :markers="100 / truthLabels.length"
+          :max="1"
+          :step="0.01"
+          :markers="1 / verityLabels.length"
           snap
           label
           label-always
           switch-label-side
-          :label-value="truthLabel"
+          :label-value="verityLabel"
           :color="typeBG || 'primary'"
           :label-text-color="typeFG || ''"
           :disable="buffer.type === 'question'"
@@ -49,19 +50,20 @@
     <!-- Goodness -->
     <q-item>
       <q-item-section>
-        <q-item-label>{{ $t("Goodness") }}</q-item-label>
+        <q-item-label>{{ $t("Valence") }}</q-item-label>
         <q-slider
           class="q-pb-lg q-mb-sm"
-          v-model="buffer.goodness"
-          @click.right.prevent="buffer.goodness = 50"
-          :min="0"
-          :max="100"
-          :markers="100 / goodnessLabels.length"
+          v-model="buffer.valence"
+          @click.right.prevent="buffer.valence = 0"
+          :min="-1"
+          :step="0.01"
+          :max="1"
+          :markers="2 / valenceLabels.length"
           snap
           label
           label-always
           switch-label-side
-          :label-value="goodnessLabel"
+          :label-value="valenceLabel"
           :color="typeBG || 'primary'"
           :label-text-color="typeFG || ''"
         />
@@ -136,8 +138,8 @@ export default {
     const defaultBuffer = Object.freeze({
       type: null,
       thought: "",
-      truth: 50,
-      goodness: 50,
+      verity: 0.5,
+      valence: 0,
     });
 
     const buffer = ref({ ...(store.state.main.draft || defaultBuffer) });
@@ -192,38 +194,38 @@ export default {
       return buffer.value.type ? types[buffer.value.type].fg : "";
     });
 
-    const truthLabels = computed(
-      () => messages.value[locale.value].labels.truth
+    const verityLabels = computed(
+      () => messages.value[locale.value].labels.verity
     );
-    const truthLabel = computed(() => {
-      const value = buffer.value.truth;
-      const max = truthLabels.value.length;
-      const step = 100 / max;
+    const verityLabel = computed(() => {
+      const value = buffer.value.verity;
+      const max = verityLabels.value.length;
+      const step = 1 / max;
       let label;
       for (let i = 0; i < max; i++) {
         if (value <= step * (i + 1)) {
-          label = truthLabels.value[i];
+          label = verityLabels.value[i];
           break;
         }
       }
-      return `${label} (${value}%)`;
+      return `${value} (${label})`;
     });
 
-    const goodnessLabels = computed(
-      () => messages.value[locale.value].labels.goodness
+    const valenceLabels = computed(
+      () => messages.value[locale.value].labels.valence
     );
-    const goodnessLabel = computed(() => {
-      const value = buffer.value.goodness;
-      const max = goodnessLabels.value.length;
-      const step = 100 / max;
+    const valenceLabel = computed(() => {
+      const value = buffer.value.valence;
+      const max = valenceLabels.value.length;
+      const step = 1 / max;
       let label;
       for (let i = 0; i < max; i++) {
-        if (value <= step * (i + 1)) {
-          label = goodnessLabels.value[i];
+        if ((value + 1) / 2 <= step * (i + 1)) {
+          label = valenceLabels.value[i];
           break;
         }
       }
-      return `${label} (${value}%)`;
+      return `${value} (${label})`;
     });
 
     const privacy = ref(store.state.main.privacy);
@@ -278,10 +280,10 @@ export default {
       typeOptions,
       typeBG,
       typeFG,
-      truthLabel,
-      truthLabels,
-      goodnessLabel,
-      goodnessLabels,
+      verityLabel,
+      verityLabels,
+      valenceLabel,
+      valenceLabels,
       privacy,
       privacyLevels,
       privacyOptions,
