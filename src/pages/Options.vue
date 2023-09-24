@@ -1,27 +1,60 @@
 <template>
-  <q-page class="page-options" padding>
-    <q-btn @click="authorize" :label="$t('Authorize')" color="primary" />
+  <q-page class="page-options non-selectable" padding>
+    <!-- Dark Mode -->
+    <q-item tag="label" @click.right.stop.prevent="darkMode = 'auto'" clickable>
+      <q-item-section avatar>
+        <q-icon name="dark_mode" />
+      </q-item-section>
+      <q-item-section>
+        {{ $t("Dark Mode") }}
+      </q-item-section>
+      <q-item-section avatar>
+        <q-toggle
+          v-model="darkMode"
+          @click.right.stop.prevent="darkMode = 'auto'"
+          color="primary"
+        />
+      </q-item-section>
+    </q-item>
+
+    <q-separator />
+
+    <!-- Connect -->
+    <q-item>
+      <q-item-section>
+        <q-item-label>
+          {{ $t("connectIris") }}
+        </q-item-label>
+      </q-item-section>
+      <q-item-section side>
+        <q-btn @click="connect" :label="$t('Connect')" color="primary" />
+      </q-item-section>
+    </q-item>
   </q-page>
 </template>
 
 <script>
 export default {
   name: "PageOptions",
-  methods: {
-    async authorize() {
-      window.location.href = `https://discord.com/oauth2/authorize?client_id=${
-        process.env.CLIENT_ID
-      }&redirect_uri=${encodeURIComponent(
-        window.location.href
-      )}&response_type=token&scope=identify%20guilds`;
+  computed: {
+    darkMode: {
+      get() {
+        return this.$store.state.main.dark;
+      },
+      set(mode) {
+        this.$store.dispatch("setDark", mode);
+      },
     },
+  },
+  methods: {
+    async connect() {},
   },
 };
 </script>
 
 <style lang="scss">
 .page-options {
-  max-width: $breakpoint-sm;
+  max-width: $breakpoint-xs;
   margin: 0 auto;
 }
 </style>

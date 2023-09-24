@@ -1,10 +1,12 @@
-import { LocalStorage } from "quasar";
+import { Dark, LocalStorage } from "quasar";
 
 export function setDark({ commit }, mode) {
   if (mode === null) {
     mode = "auto";
   }
+  Dark.set(mode);
   LocalStorage.set("dark", mode);
+
   commit("setDark", mode);
 }
 

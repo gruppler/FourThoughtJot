@@ -6,6 +6,7 @@ export default {
   check: "mdi-check-circle",
   close: "mdi-close",
   copy: "mdi-content-copy",
+  dark_mode: "mdi-invert-colors",
   delete: "mdi-delete",
   edit: "mdi-pencil",
   error: "mdi-alert-circle",

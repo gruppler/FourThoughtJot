@@ -1,6 +1,8 @@
 export default {
   appTitle: "FourThought Jot",
   Authorize: "Authorize",
+  authorizeIris: "Connect FourThought Jot to your Iris server",
+  "Dark Mode": "Dark Mode",
   Global: "Global",
   Goodness: "Goodness",
   Local: "Local",
