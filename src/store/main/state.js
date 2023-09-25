@@ -4,10 +4,16 @@ export default function () {
   return {
     dark: LocalStorage.has("dark") ? LocalStorage.getItem("dark") : "auto",
 
-    privacy: LocalStorage.has("privacy")
-      ? LocalStorage.getItem("privacy")
+    draft: LocalStorage.has("draft") ? LocalStorage.getItem("draft") : null,
+
+    server: LocalStorage.has("server")
+      ? LocalStorage.getItem("server")
       : "private",
 
-    draft: LocalStorage.has("draft") ? LocalStorage.getItem("draft") : null,
+    servers: LocalStorage.has("servers")
+      ? LocalStorage.getItem("servers").map((id) =>
+          LocalStorage.getItem("server-" + id)
+        )
+      : [],
   };
 }

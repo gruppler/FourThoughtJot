@@ -73,9 +73,9 @@
     <q-separator />
 
     <q-card-actions>
-      <!-- Privacy -->
+      <!-- Server -->
       <q-select
-        v-model="privacy"
+        v-model="server"
         :options="privacyOptions"
         :color="typeBG || 'primary'"
         map-options
@@ -84,10 +84,7 @@
         dense
       >
         <template v-slot:prepend>
-          <q-icon
-            :name="privacyLevels[privacy].icon"
-            :color="typeBG || 'primary'"
-          />
+          <q-icon :name="serverIcon" :color="typeBG || 'primary'" />
         </template>
 
         <template v-slot:option="scope">
@@ -228,31 +225,51 @@ export default {
       return `${value} (${label})`;
     });
 
-    const privacy = ref(store.state.main.privacy);
-    watch(privacy, (mode) => store.dispatch("setPrivacy", mode));
+    const server = ref(
+      store.state.main.servers.find((s) => s.id === store.state.main.server)
+        ? store.state.main.server
+        : "private"
+    );
+    watch(server, (mode) => store.dispatch("selectServer", mode));
     const privacyLevels = {
       private: {
         value: "private",
         label: t("Private"),
         icon: "private",
-        order: 1,
       },
       local: {
         value: "local",
         label: t("Local"),
         icon: "local",
-        order: 2,
       },
       global: {
         value: "global",
         label: t("Global"),
         icon: "global",
-        order: 3,
       },
     };
-    const privacyOptions = Object.values(privacyLevels).sort(
-      (a, b) => a.order - b.order
-    );
+    const serverIcon = computed(() => {
+      if (server.value === "private") {
+        return privacyLevels.private.icon;
+      } else {
+        let s = store.state.main.servers.find((s) => s.id === server.value);
+        return s && s.type ? privacyLevels[s.type].icon : "private";
+      }
+    });
+    const privacyOptions = computed(() => {
+      let options = [
+        { ...privacyLevels.private },
+        ...store.state.main.servers
+          .filter((server) => server.name && server.address && server.type)
+          .map((server) => ({
+            value: server.id,
+            label: server.name,
+            icon: privacyLevels[server.type].icon,
+            disable: !server.connected,
+          })),
+      ];
+      return options;
+    });
 
     const reset = () => {
       buffer.value = { ...defaultBuffer };
@@ -261,6 +278,7 @@ export default {
     const stake = async () => {
       try {
         isStaking.value = true;
+        await store.dispatch("stakeThought", buffer.value);
       } catch (error) {
         console.error(error);
       } finally {
@@ -284,7 +302,8 @@ export default {
       verityLabels,
       valenceLabel,
       valenceLabels,
-      privacy,
+      server,
+      serverIcon,
       privacyLevels,
       privacyOptions,
       reset,

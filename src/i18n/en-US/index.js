@@ -1,10 +1,14 @@
 export default {
   appTitle: "FourThought Jot",
+
+  "Add Server": "Add Server",
+  Address: "Address",
   Connect: "Connect",
-  connectIris: "Connect FourThought Jot to your Iris server",
   "Dark Mode": "Dark Mode",
+  Delete: "Delete",
   Global: "Global",
   Local: "Local",
+  Name: "Name",
   Prediction: "Prediction",
   Private: "Private",
   Question: "Question",
